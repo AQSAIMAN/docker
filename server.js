@@ -24,21 +24,22 @@ app.get("/", (req, res) => {
 });
 
 // ---------- MySQL Connection ----------
-const db = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "operations",
-  port: Number(process.env.DB_PORT) || 3307,
-});
+let db;
 
 // ---------- Connect to MySQL with retry ----------
 function connectWithRetry() {
+  db = mysql.createConnection({
+    host: process.env.DB_HOST || "localhost",
+    user: process.env.DB_USER || "root",
+    password: process.env.DB_PASSWORD || "",
+    database: process.env.DB_NAME || "operations",
+    port: Number(process.env.DB_PORT) || 3307,
+  });
+
   db.connect((err) => {
     if (err) {
-      console.error("MySQL not ready yet. Retrying in 3 seconds...");
-      console.error(err.message);
-
+      console.error("MySQL not ready yet:", err.message);
+      db.destroy();
       setTimeout(connectWithRetry, 3000);
       return;
     }
