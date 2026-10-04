@@ -1,0 +1,8 @@
+# Copy this file to  terraform.tfvars  and fill in your real values.
+# terraform.tfvars is gitignored so your details never get committed.
+
+aws_region    = "eu-north-1"
+instance_type = "t3.micro"
+key_name      = "docker"      # the name of your key pair in AWS (no .pem)
+my_ip         = "103.154.64.133/32"      # your public IP — get it from https://ifconfig.me
+repo_url      = "https://github.com/AQSAIMAN/docker"  # public repo cloned & run on boot
